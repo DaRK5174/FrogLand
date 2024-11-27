@@ -46,19 +46,15 @@ public class PlayerControl : MonoBehaviour
         {
             anim.SetBool("isRun", true);
         }
+
+        Jump();
+
     }
 
      void Update()
     {
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-
-        if (isGrounded == true && Input.GetKeyDown(KeyCode.Space))
-
-        {
-           rb.velocity = Vector2.up * jumpfors;
-        }
-
-
+      
           //  anim.SetTrigger("startGamp");
 
         if (isGrounded == true)
@@ -77,6 +73,37 @@ public class PlayerControl : MonoBehaviour
         Vector3 Scaler = transform.localScale;
         Scaler.x *= -1;
         transform.localScale = Scaler;
+    }
+
+    private bool jumpControle;
+    private float jumpTime = 0;
+    public float jumpControlTime = 0.7f;
+
+    void Jump()
+    {
+         if (Input.GetKey(KeyCode.Space))
+         {
+            if(isGrounded == true)
+            {
+                jumpControle = true;
+            }
+         }
+        else
+        {
+            jumpControle = false;
+        }
+
+         if(jumpControle== true)
+        {  
+            if((jumpTime += Time.deltaTime)< jumpControlTime)
+            {
+                rb.AddForce( Vector2.up * jumpfors / (jumpTime));
+            }
+        }
+        else
+        {
+            jumpTime = 0;
+        }
     }
 }
 

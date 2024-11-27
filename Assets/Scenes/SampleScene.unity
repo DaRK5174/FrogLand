@@ -156,12 +156,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  jumpfors: 7
+  jumpfors: 2.2
   feetPos: {fileID: 1648700359}
   checkRadius: 0.07
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8192
+  jumpControlTime: 2
 --- !u!50 &115791073
 Rigidbody2D:
   serializedVersion: 4
