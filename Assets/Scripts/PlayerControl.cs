@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControl : MonoBehaviour
+public class PlayerControl : SaundCenter
 {
     public float speed;
     public float jumpfors;
@@ -20,16 +20,20 @@ public class PlayerControl : MonoBehaviour
     private Animator anim;
 
 
+    private bool danseYes;
     private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+
+        danseYes = false;
     }
 
     private void FixedUpdate()
     {
         moveInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+        
         if (facingRight == false && moveInput > 0)
         {
             flip();
@@ -44,11 +48,26 @@ public class PlayerControl : MonoBehaviour
         }
         else
         {
+            
             anim.SetBool("isRun", true);
         }
 
         Jump();
 
+        if (Input.GetKey(KeyCode.L))
+        {
+           
+            if (danseYes == false)
+            {
+                danseYes = true;
+                anim.SetBool("Danse", true);
+            }
+            else if(danseYes == true)
+            {
+                danseYes = false;
+                anim.SetBool("Danse", false);
+            }
+        }
     }
 
      void Update()
@@ -57,14 +76,7 @@ public class PlayerControl : MonoBehaviour
       
           //  anim.SetTrigger("startGamp");
 
-        if (isGrounded == true)
-        {
-           // anim.SetBool("isGamp", false);
-        }
-        else
-        {
-           // anim.SetBool("isGamp", true);
-        }
+        
     }
 
     void flip()
@@ -81,28 +93,45 @@ public class PlayerControl : MonoBehaviour
 
     void Jump()
     {
-         if (Input.GetKey(KeyCode.Space))
-         {
-            if(isGrounded == true)
+        
+        if (isGrounded == true)
+        {
+            anim.SetBool("isJump", false);
+        }
+        else if(isGrounded == false && !Input.GetKey(KeyCode.Space))
+        {
+            anim.SetBool("isJump", true);
+        }
+
+      
+               //   anim.SetTrigger("failJump");
+        
+
+        if (Input.GetKey(KeyCode.Space))
+        {                              
+            if (isGrounded == true)
             {
+                anim.SetTrigger("startJump");
                 jumpControle = true;
-            }
-         }
+            }      
+        }
         else
         {
             jumpControle = false;
         }
 
-         if(jumpControle== true)
-        {  
-            if((jumpTime += Time.deltaTime)< jumpControlTime)
-            {
+        if (jumpControle == true)
+        { 
+         
+            if ((jumpTime += Time.deltaTime)< jumpControlTime)
+            {                
                 rb.AddForce( Vector2.up * jumpfors / (jumpTime));
             }
         }
         else
-        {
+        {          
             jumpTime = 0;
+           
         }
     }
 }
