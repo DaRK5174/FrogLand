@@ -8,21 +8,25 @@ public class PlayerControl : SaundCenter
     public float jumpfors;
     private float moveInput;
 
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
 
     private bool facingRight = true;
 
-    private bool isGrounded;
+    public bool isGrounded;
     public Transform feetPos;
     public float checkRadius;
     public LayerMask whatIsGround;
 
     private Animator anim;
+    
+    PlayerControl player;
+
 
 
     private bool danseYes;
     private void Start()
     {
+        
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
 
@@ -75,7 +79,6 @@ public class PlayerControl : SaundCenter
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
       
           //  anim.SetTrigger("startGamp");
-
         
     }
 
