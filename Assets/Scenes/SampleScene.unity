@@ -406,9 +406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dea39617d0e8cc47b7bec4a3e601d9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 2
-  rb: {fileID: 0}
-  slidespeed: -2
 --- !u!68 &115791081
 EdgeCollider2D:
   m_ObjectHideFlags: 0

@@ -52,7 +52,7 @@ public class PlayerControl : SaundCenter
         }
         else
         {
-            
+           // PlaySound(sounds[1]);
             anim.SetBool("isRun", true);
         }
 
