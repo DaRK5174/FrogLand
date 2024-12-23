@@ -31,13 +31,18 @@ public class PlayerControl : SaundCenter
         rb = GetComponent<Rigidbody2D>();
 
         danseYes = false;
+
+        if(isGrounded == true)
+        {
+            PlaySound(sounds[1]);
+        }
     }
 
     private void FixedUpdate()
     {
         moveInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
-        
+
         if (facingRight == false && moveInput > 0)
         {
             flip();
@@ -48,12 +53,14 @@ public class PlayerControl : SaundCenter
         }
         if (moveInput == 0)
         {
+
             anim.SetBool("isRun", false);
         }
         else
         {
-           // PlaySound(sounds[1]);
+            
             anim.SetBool("isRun", true);
+        
         }
 
         Jump();
@@ -77,9 +84,7 @@ public class PlayerControl : SaundCenter
      void Update()
     {
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-      
-          //  anim.SetTrigger("startGamp");
-        
+              
     }
 
     void flip()
@@ -94,33 +99,37 @@ public class PlayerControl : SaundCenter
     private float jumpTime = 0;
     public float jumpControlTime = 0.7f;
 
+    private bool setTriggerOn = true;
     void Jump()
     {
         
         if (isGrounded == true)
         {
             anim.SetBool("isJump", false);
+
         }
         else if(isGrounded == false && !Input.GetKey(KeyCode.Space))
-        {
+        {          
             anim.SetBool("isJump", true);
-        }
-
-      
-               //   anim.SetTrigger("failJump");
-        
+           
+        }      
 
         if (Input.GetKey(KeyCode.Space))
         {                              
             if (isGrounded == true)
             {
-                anim.SetTrigger("startJump");
-                jumpControle = true;
+                if (setTriggerOn ==true)
+                {
+                    anim.SetTrigger("startJump");
+                    jumpControle = true;
+                    setTriggerOn = false;
+                }
             }      
         }
         else
         {
             jumpControle = false;
+            setTriggerOn = true;
         }
 
         if (jumpControle == true)
@@ -128,7 +137,7 @@ public class PlayerControl : SaundCenter
          
             if ((jumpTime += Time.deltaTime)< jumpControlTime)
             {                
-                rb.AddForce( Vector2.up * jumpfors / (jumpTime));
+                rb.AddForce( Vector2.up * jumpfors / (jumpTime*10));
             }
         }
         else
@@ -136,6 +145,23 @@ public class PlayerControl : SaundCenter
             jumpTime = 0;
            
         }
+
+        
+    }
+    public void OffAnimationJump()
+    {
+        PlaySound(sounds[2]);
+
+    }
+
+    public void OnAnimationJump()
+    {                     
+        PlaySound(sounds[1]);
+    }
+     
+    public void OnAnimationRun ()
+    {
+        PlaySound(sounds[0]);
     }
 }
 
